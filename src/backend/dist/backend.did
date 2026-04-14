@@ -1,0 +1,145 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UpdateMenuItemArgs = 
+ record {
+   available: bool;
+   category: text;
+   description: text;
+   imageUrl: opt text;
+   name: text;
+   price: nat;
+ };
+type Timestamp = int;
+type ReviewId = nat;
+type Review = 
+ record {
+   comment: text;
+   createdAt: Timestamp;
+   customer: principal;
+   id: ReviewId;
+   orderId: OrderId;
+   rating: nat;
+   restaurantId: RestaurantId;
+ };
+type RestaurantId = text;
+type Restaurant = 
+ record {
+   address: text;
+   createdAt: Timestamp;
+   email: text;
+   name: text;
+   owner: principal;
+   phone: text;
+   rid: RestaurantId;
+ };
+type PaymentMethod = 
+ variant {
+   Card;
+   Cash;
+   UPI;
+ };
+type OrderStatus = 
+ variant {
+   Cancelled;
+   Completed;
+   Pending;
+   Preparing;
+   Ready;
+ };
+type OrderItem = 
+ record {
+   menuItemId: MenuItemId;
+   name: text;
+   price: nat;
+   quantity: nat;
+ };
+type OrderId = nat;
+type Order = 
+ record {
+   createdAt: Timestamp;
+   customer: principal;
+   customerName: text;
+   deliveryAddress: text;
+   id: OrderId;
+   items: vec OrderItem;
+   paymentMethod: PaymentMethod;
+   phone: text;
+   restaurantId: RestaurantId;
+   status: OrderStatus;
+ };
+type MenuItemId = nat;
+type MenuItem = 
+ record {
+   available: bool;
+   category: text;
+   description: text;
+   id: MenuItemId;
+   imageUrl: opt text;
+   name: text;
+   price: nat;
+   restaurantId: RestaurantId;
+ };
+type CustomerProfile = 
+ record {
+   name: text;
+   phone: text;
+   "principal": principal;
+ };
+type CreateReviewArgs = 
+ record {
+   comment: text;
+   orderId: OrderId;
+   rating: nat;
+   restaurantId: RestaurantId;
+ };
+type CreateOrderArgs = 
+ record {
+   customerName: text;
+   deliveryAddress: text;
+   items: vec record {
+                menuItemId: MenuItemId;
+                quantity: nat;
+              };
+   paymentMethod: PaymentMethod;
+   phone: text;
+   restaurantId: RestaurantId;
+ };
+type CreateMenuItemArgs = 
+ record {
+   available: bool;
+   category: text;
+   description: text;
+   imageUrl: opt text;
+   name: text;
+   price: nat;
+   restaurantId: RestaurantId;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  addMenuItem: (args: CreateMenuItemArgs) -> (MenuItem);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  deleteMenuItem: (id: MenuItemId) -> (bool);
+  getCallerUserRole: () -> (UserRole) query;
+  getCustomerProfile: () -> (opt CustomerProfile) query;
+  getMyRestaurant: () -> (opt Restaurant) query;
+  getOrder: (id: OrderId) -> (opt Order) query;
+  getRestaurant: (rid: RestaurantId) -> (opt Restaurant) query;
+  isCallerAdmin: () -> (bool) query;
+  listMenuItems: (restaurantId: RestaurantId) -> (vec MenuItem) query;
+  listOrdersByCustomer: () -> (vec Order) query;
+  listOrdersByRestaurant: (restaurantId: RestaurantId) -> (vec Order) query;
+  listRestaurants: () -> (vec Restaurant) query;
+  listReviewsByRestaurant: (restaurantId: RestaurantId) -> (vec Review) query;
+  placeOrder: (args: CreateOrderArgs) -> (Order);
+  registerCustomer: (name: text, phone: text) -> (CustomerProfile);
+  registerRestaurant: (name: text, phone: text, address: text, email:
+   text) -> (Restaurant);
+  submitReview: (args: CreateReviewArgs) -> (Review);
+  updateMenuItem: (id: MenuItemId, args: UpdateMenuItemArgs) ->
+   (opt MenuItem);
+  updateOrderStatus: (id: OrderId, status: OrderStatus) -> (opt Order);
+}

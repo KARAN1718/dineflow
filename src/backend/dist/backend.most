@@ -1,0 +1,116 @@
+// Version: 1.0.0
+type CustomerProfile__618613503 =
+  {name : Text; phone : Text; principal : Principal};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type MenuItemId__18119667 = Nat;
+type MenuItemId__223294659 = MenuItemId__18119667;
+type MenuItemId__580787430 = MenuItemId__18119667;
+type MenuItem__25360883 =
+  {
+    available : Bool;
+    category : Text;
+    description : Text;
+    id : MenuItemId__580787430;
+    imageUrl : ?Text;
+    name : Text;
+    price : Nat;
+    restaurantId : RestaurantId__909486158
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OrderId__197865225 = Nat;
+type OrderId__559018581 = OrderId__197865225;
+type OrderId__602383842 = OrderId__197865225;
+type OrderItem__970180480 =
+  {
+    menuItemId : MenuItemId__223294659;
+    name : Text;
+    price : Nat;
+    quantity : Nat
+  };
+type OrderStatus__591380551 =
+  {#Cancelled; #Completed; #Pending; #Preparing; #Ready};
+type Order__720360493 =
+  {
+    createdAt : Timestamp__301639476;
+    customer : Principal;
+    customerName : Text;
+    deliveryAddress : Text;
+    id : OrderId__559018581;
+    items : [OrderItem__970180480];
+    paymentMethod : PaymentMethod__731196174;
+    phone : Text;
+    restaurantId : RestaurantId__155496165;
+    status : OrderStatus__591380551
+  };
+type PaymentMethod__731196174 = {#Card; #Cash; #UPI};
+type RestaurantId__155496165 = RestaurantId__389023155;
+type RestaurantId__389023155 = Text;
+type RestaurantId__727460521 = RestaurantId__389023155;
+type RestaurantId__77784672 = RestaurantId__389023155;
+type RestaurantId__909486158 = RestaurantId__389023155;
+type Restaurant__761304188 =
+  {
+    address : Text;
+    createdAt : Timestamp__301639476;
+    email : Text;
+    name : Text;
+    owner : Principal;
+    phone : Text;
+    rid : RestaurantId__727460521
+  };
+type ReviewId__1068003314 = ReviewId__496285678;
+type ReviewId__496285678 = Nat;
+type Review__1059295586 =
+  {
+    comment : Text;
+    createdAt : Timestamp__301639476;
+    customer : Principal;
+    id : ReviewId__1068003314;
+    orderId : OrderId__602383842;
+    rating : Nat;
+    restaurantId : RestaurantId__77784672
+  };
+type Timestamp__301639476 = Int;
+type UserRole__1054455867 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1054455867>
+    };
+  stable customerState :
+    {profiles : Map__605269027<Principal, CustomerProfile__618613503>};
+  stable menuState :
+    {
+      menuItems : Map__605269027<MenuItemId__18119667, MenuItem__25360883>;
+      var nextId : Nat
+    };
+  stable orderState :
+    {
+      var nextId : Nat;
+      orders : Map__605269027<OrderId__197865225, Order__720360493>
+    };
+  stable restaurantState :
+    {
+      var nextRidSeed : Nat;
+      ownerIndex : Map__605269027<Principal, RestaurantId__389023155>;
+      restaurants :
+        Map__605269027<RestaurantId__389023155, Restaurant__761304188>
+    };
+  stable reviewState :
+    {
+      var nextId : Nat;
+      reviews : Map__605269027<ReviewId__496285678, Review__1059295586>
+    }
+};

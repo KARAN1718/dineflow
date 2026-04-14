@@ -1,0 +1,22 @@
+{
+  "overview": "A unified platform for restaurant owners and customers. Restaurant owners can register, manage menus with photos, and track/update orders in real time. Customers can discover restaurants by ID, browse menus, place orders, and watch their order status update live.",
+  "features": [
+    "Restaurant registration with unique RID and QR code",
+    "Menu management with image uploads",
+    "Restaurant order dashboard with status updates",
+    "Customer restaurant discovery by RID",
+    "Menu browsing with cart and checkout",
+    "Stubbed payment method selection (Cash / Card / UPI)",
+    "Live order tracking via auto-polling"
+  ],
+  "category": "productivity",
+  "tags": [
+    "restaurant",
+    "ordering",
+    "food",
+    "management",
+    "mvp",
+    "dual-sided"
+  ],
+  "last_updated": "2026-04-14T09:50:44.789Z"
+}
